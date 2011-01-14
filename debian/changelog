@@ -1,3 +1,10 @@
+mutt (1.5.20-9+squeeze1) unstable; urgency=low
+
+  * upstream/537061-dont-recode-saved-attachments.patch: as the patch says,
+    see the patch for more info (Closes: 537061)
+
+ -- Antonio Radici <antonio@dyne.org>  Fri, 14 Jan 2011 14:19:26 +0000
+
 mutt (1.5.20-9) unstable; urgency=low
 
   * hurd-i386 fixes:

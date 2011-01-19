@@ -1,3 +1,10 @@
+mutt (1.5.21-2nntp1) experimental; urgency=low
+
+  * Add NNTP patch:
+    http://mutt.org.ua/download/mutt-1.5.21/patch-1.5.21.vvv.nntp.gz
+
+ -- Leandro Lucarella <luca@homero.springfield.home>  Wed, 19 Jan 2011 00:40:09 -0300
+
 mutt (1.5.21-2) experimental; urgency=low
 
   [ Christoph Berg ]

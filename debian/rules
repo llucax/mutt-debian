@@ -104,7 +104,7 @@ ifeq ($(BUILD_PATCHED),yes)
 	autoreconf --install --include=m4
 	cd $(objdir)-patched && \
 	env CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	../configure $(confflags)
+	../configure --enable-nntp $(confflags)
 	
 	echo '#include "config-debian.h"' >> $(objdir)-patched/config.h
 	

@@ -41,4 +41,6 @@ debian/*.debhelper*
 
 obj-i486-linux-gnu-patched/
 obj-i486-linux-gnu/
+obj-x86_64-linux-gnu/
+obj-x86_64-linux-gnu-patched/
 tags

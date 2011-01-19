@@ -62,8 +62,8 @@ mutt-patched/sidebar-sorted
 mutt-patched/sidebar-utf8
 mutt-patched/multiple-fcc
 
-# not applying cleanly at the moment
-#mutt-patched/nntp
+# taken from http://mutt.org.ua/download/mutt-1.5.21/patch-1.5.21.vvv.nntp.gz
+mutt-patched/nntp
 
 # unapplied patches for custom packages
 # not-applied/chdir

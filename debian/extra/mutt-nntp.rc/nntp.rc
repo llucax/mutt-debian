@@ -1,0 +1,6 @@
+
+# Example configuration for the NNTP patch
+#set news_server = "nntp.example.com"
+#set news_cache_dir = "~/.mutt-news-cache"
+#set newsrc = "~/.mutt-newsrc"
+

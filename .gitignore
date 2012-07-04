@@ -29,11 +29,13 @@ po/Makefile
 po/Makefile.in
 po/POTFILES
 stamp-h1
+PATCHES
 
 debian/files
 debian/mutt
 debian/mutt-dbg
 debian/mutt-patched
+debian/mutt-nntp
 debian/stamp-patched
 debian/tmp
 debian/*.substvars
@@ -43,4 +45,5 @@ obj-i486-linux-gnu-patched/
 obj-i486-linux-gnu/
 obj-x86_64-linux-gnu/
 obj-x86_64-linux-gnu-patched/
+obj-x86_64-linux-gnu-nntp/
 tags

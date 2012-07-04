@@ -6,6 +6,8 @@ QUILT = QUILT_PATCHES=$(QUILT_PATCH_DIR) quilt --quiltrc /dev/null
 ###################### user serviceable parts ######################
 
 ###
+# build a separate mutt-nntp package?
+BUILD_NNTP := yes
 # build a separate mutt-patched package?
 BUILD_PATCHED := yes
 ###
@@ -21,8 +23,12 @@ GPGME := --enable-gpgme
 
 ###################### variables ######################
 
+ifneq ($(BUILD_NNTP),yes)
+export DH_OPTIONS += -Nmutt-nntp
+endif
+
 ifneq ($(BUILD_PATCHED),yes)
-export DH_OPTIONS := -Nmutt-patched
+export DH_OPTIONS += -Nmutt-patched
 endif
 
 # Configure arguments
@@ -93,25 +99,47 @@ objdir = $(CURDIR)/obj-$(DEB_HOST_GNU_TYPE)
 
 ###################### main ######################
 
-$(objdir)-patched/build-stamp: $(QUILT_STAMPFN)
+$(objdir)-nntp/build-stamp: $(QUILT_STAMPFN)
+	dh_testdir
+	dh_clean
+	-mkdir $(objdir)-nntp
+
+ifeq ($(BUILD_NNTP),yes)
+	###################### building mutt-nntp ######################
+	$(QUILT) applied > PATCHES
+	autoreconf --install --include=m4
+	cd $(objdir)-nntp && \
+	env CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
+	../configure --enable-nntp $(confflags)
+
+	echo '#include "config-debian.h"' >> $(objdir)-nntp/config.h
+
+	# we should just "make mutt" here, but that doesn't work yet
+	cd $(objdir)-nntp && $(MAKE) CFLAGS="$(CFLAGS)"
+endif
+
+	touch $@
+
+$(objdir)-patched/build-stamp: $(objdir)-nntp/build-stamp
 	dh_testdir
 	dh_clean
 	-mkdir $(objdir)-patched
-	
+
 ifeq ($(BUILD_PATCHED),yes)
 	###################### building mutt-patched ######################
+	$(QUILT) pop mutt.patched
 	$(QUILT) applied > PATCHES
 	autoreconf --install --include=m4
 	cd $(objdir)-patched && \
 	env CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	../configure --enable-nntp $(confflags)
-	
+	../configure $(confflags)
+
 	echo '#include "config-debian.h"' >> $(objdir)-patched/config.h
-	
+
 	# we should just "make mutt" here, but that doesn't work yet
 	cd $(objdir)-patched && $(MAKE) CFLAGS="$(CFLAGS)"
 endif
-	
+
 	touch $@
 
 build build-arch: $(objdir)/build-stamp
@@ -163,6 +191,9 @@ install: build
 ifeq ($(BUILD_PATCHED),yes)
 	install -D $(objdir)-patched/mutt debian/mutt-patched/usr/bin/mutt-patched
 endif
+ifeq ($(BUILD_NNTP),yes)
+	install -D $(objdir)-nntp/mutt debian/mutt-nntp/usr/bin/mutt-nntp
+endif
 	
 	# reportbug driver
 	dh_installdirs
@@ -181,7 +212,8 @@ binary binary-arch: install
 	
 	dh_strip --dbg-package=mutt-dbg
 	rm -rf $(CURDIR)/debian/mutt-dbg/usr/share/doc/mutt-dbg \
-		$(CURDIR)/debian/mutt-patched/usr/share/doc/mutt-patched
+		$(CURDIR)/debian/mutt-patched/usr/share/doc/mutt-patched \
+		$(CURDIR)/debian/mutt-nntp/usr/share/doc/mutt-nntp
 	
 	dh_link
 	dh_compress --exclude usr/share/doc/mutt/README.Patches
@@ -205,7 +237,7 @@ clean: unpatch
 	echo -n > PATCHES
 	
 	# remove build trees
-	rm -rf $(objdir) $(objdir)-patched
+	rm -rf $(objdir) $(objdir)-patched $(objdir)-nntp
 	
 	# remove autotool-generated files so they don't show up in the diff.gz
 	rm -f configure config.h.in

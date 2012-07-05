@@ -1,4 +1,4 @@
-mutt (1.5.21-5nntp2) unstable; urgency=low
+mutt (1.5.21-5nntp3) unstable; urgency=low
 
   * Add new package mutt-nntp with NNTP patch:
     http://mutt.org.ua/download/mutt-1.5.21/patch-1.5.21.vvv.nntp.gz

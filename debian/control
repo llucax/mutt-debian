@@ -51,7 +51,7 @@ Description: Mutt Mail User Agent with extra patches
 Package: mutt-nntp
 Architecture: any
 Priority: extra
-Depends: ${shlibs:Depends}, ${misc:Depends}, mutt (<= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, mutt (>= 1.5.21)
 Description: Mutt Mail User Agent with extra patches and NNTP support
  Mutt is a sophisticated text-based Mail User Agent.
  .
